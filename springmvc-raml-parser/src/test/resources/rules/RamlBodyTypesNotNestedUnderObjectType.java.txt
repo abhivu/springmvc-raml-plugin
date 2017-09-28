@@ -1,3 +1,79 @@
+-----------------------------------com.gen.test.model.AdsPrivileges.java-----------------------------------
+
+package com.gen.test.model;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public enum AdsPrivileges {
+
+    NO_ADS("NO_ADS"),
+    SHOW_ADS("SHOW_ADS");
+    private final String value;
+    private final static Map<String, AdsPrivileges> VALUE_CACHE = new HashMap<String, AdsPrivileges>();
+
+    static {
+        for (AdsPrivileges c: values()) {
+            VALUE_CACHE.put(c.value, c);
+        }
+    }
+
+    private AdsPrivileges(String value) {
+        this.value = value;
+    }
+
+    public String value() {
+        return this.value;
+    }
+
+    public static AdsPrivileges fromValue(String value) {
+        return VALUE_CACHE.get(value);
+    }
+
+    @Override
+    public String toString() {
+        return this.value;
+    }
+
+}
+-----------------------------------com.gen.test.model.ContentPrivileges.java-----------------------------------
+
+package com.gen.test.model;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public enum ContentPrivileges {
+
+    PREMIUM_BLOCKED("PREMIUM_BLOCKED"),
+    PREMIUM_GRANTED("PREMIUM_GRANTED");
+    private final String value;
+    private final static Map<String, ContentPrivileges> VALUE_CACHE = new HashMap<String, ContentPrivileges>();
+
+    static {
+        for (ContentPrivileges c: values()) {
+            VALUE_CACHE.put(c.value, c);
+        }
+    }
+
+    private ContentPrivileges(String value) {
+        this.value = value;
+    }
+
+    public String value() {
+        return this.value;
+    }
+
+    public static ContentPrivileges fromValue(String value) {
+        return VALUE_CACHE.get(value);
+    }
+
+    @Override
+    public String toString() {
+        return this.value;
+    }
+
+}
 -----------------------------------com.gen.test.model.CreateSampleUnitRequest.java-----------------------------------
 
 package com.gen.test.model;
@@ -91,6 +167,99 @@ public class CreateSampleUnitRequest implements Serializable
     }
 
 }
+-----------------------------------com.gen.test.model.Privileges.java-----------------------------------
+
+package com.gen.test.model;
+
+import java.io.Serializable;
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+
+public class Privileges implements Serializable
+{
+
+    private ContentPrivileges contentPrivileges;
+    private AdsPrivileges adsPrivileges;
+
+    /**
+     * Creates a new Privileges.
+     *
+     */
+    public Privileges() {
+        super();
+    }
+
+    /**
+     * Creates a new Privileges.
+     *
+     */
+    public Privileges(ContentPrivileges contentPrivileges, AdsPrivileges adsPrivileges) {
+        super();
+        this.contentPrivileges = contentPrivileges;
+        this.adsPrivileges = adsPrivileges;
+    }
+
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
+    }
+
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        if ((other instanceof Privileges) == false) {
+            return false;
+        }
+        Privileges otherObject = ((Privileges) other);
+        return new EqualsBuilder().isEquals();
+    }
+
+    public int hashCode() {
+        return new HashCodeBuilder().toHashCode();
+    }
+
+    /**
+     * Returns the contentPrivileges.
+     *
+     * @return
+     *     contentPrivileges
+     */
+    public ContentPrivileges getContentPrivileges() {
+        return contentPrivileges;
+    }
+
+    /**
+     * Set the contentPrivileges.
+     *
+     * @param contentPrivileges
+     *     the new contentPrivileges
+     */
+    public void setContentPrivileges(ContentPrivileges contentPrivileges) {
+        this.contentPrivileges = contentPrivileges;
+    }
+
+    /**
+     * Returns the adsPrivileges.
+     *
+     * @return
+     *     adsPrivileges
+     */
+    public AdsPrivileges getAdsPrivileges() {
+        return adsPrivileges;
+    }
+
+    /**
+     * Set the adsPrivileges.
+     *
+     * @param adsPrivileges
+     *     the new adsPrivileges
+     */
+    public void setAdsPrivileges(AdsPrivileges adsPrivileges) {
+        this.adsPrivileges = adsPrivileges;
+    }
+
+}
 -----------------------------------com.gen.test.model.ResponseType.java-----------------------------------
 
 package com.gen.test.model;
@@ -104,11 +273,10 @@ public class ResponseType implements Serializable
 {
 
     /**
-     * facebook token for the user. This token will be validated with facebook
+     * privileges for the user
      *
      */
-    private String token;
-    private String facebookId;
+    private Privileges privileges;
 
     /**
      * Creates a new ResponseType.
@@ -122,10 +290,9 @@ public class ResponseType implements Serializable
      * Creates a new ResponseType.
      *
      */
-    public ResponseType(String token, String facebookId) {
+    public ResponseType(Privileges privileges) {
         super();
-        this.token = token;
-        this.facebookId = facebookId;
+        this.privileges = privileges;
     }
 
     public String toString() {
@@ -148,43 +315,23 @@ public class ResponseType implements Serializable
     }
 
     /**
-     * Returns the token.
+     * Returns the privileges.
      *
      * @return
-     *     token
+     *     privileges
      */
-    public String getToken() {
-        return token;
+    public Privileges getPrivileges() {
+        return privileges;
     }
 
     /**
-     * Set the token.
+     * Set the privileges.
      *
-     * @param token
-     *     the new token
+     * @param privileges
+     *     the new privileges
      */
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    /**
-     * Returns the facebookId.
-     *
-     * @return
-     *     facebookId
-     */
-    public String getFacebookId() {
-        return facebookId;
-    }
-
-    /**
-     * Set the facebookId.
-     *
-     * @param facebookId
-     *     the new facebookId
-     */
-    public void setFacebookId(String facebookId) {
-        this.facebookId = facebookId;
+    public void setPrivileges(Privileges privileges) {
+        this.privileges = privileges;
     }
 
 }
@@ -199,7 +346,7 @@ import org.springframework.http.ResponseEntity;
 
 /**
  * A collection of samples
- * (Generated with springmvc-raml-parser v.0.10.8.2-SNAPSHOT)
+ * (Generated with springmvc-raml-parser v.0.10.8.6-SNAPSHOT)
  *
  */
 public interface SampleUnitController {
@@ -232,7 +379,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * A collection of samples
- * (Generated with springmvc-raml-parser v.0.10.8.2-SNAPSHOT)
+ * (Generated with springmvc-raml-parser v.0.10.8.6-SNAPSHOT)
  *
  */
 @RestController
