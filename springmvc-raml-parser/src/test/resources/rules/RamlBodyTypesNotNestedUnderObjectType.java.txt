@@ -1,3 +1,23 @@
+-----------------------------------ResponseTypeBuilder.java-----------------------------------
+import com.gen.test.model.Privileges;
+import com.gen.test.model.ResponseType;
+
+public class ResponseTypeBuilder {
+
+    private Privileges privileges;
+
+    public ResponseTypeBuilder withprivileges(Privileges privileges) {
+        this.privileges = privileges;
+        return this;
+    }
+
+    public ResponseType build() {
+        ResponseType result = new ResponseType();
+        result.setPrivileges(privileges);
+        return result;
+    }
+
+}
 -----------------------------------com.gen.test.model.AdsPrivileges.java-----------------------------------
 
 package com.gen.test.model;
