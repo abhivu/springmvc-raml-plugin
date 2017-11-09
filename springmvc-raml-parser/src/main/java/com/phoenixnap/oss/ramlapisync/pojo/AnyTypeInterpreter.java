@@ -1,18 +1,19 @@
 package com.phoenixnap.oss.ramlapisync.pojo;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
+import com.phoenixnap.oss.ramlapisync.generation.CodeModelHelper;
+import com.phoenixnap.oss.ramlapisync.raml.RamlRoot;
+import com.sun.codemodel.JClass;
+import com.sun.codemodel.JCodeModel;
 import org.raml.v2.api.model.v10.datamodel.AnyTypeDeclaration;
 import org.raml.v2.api.model.v10.datamodel.TypeDeclaration;
 
-import com.phoenixnap.oss.ramlapisync.generation.CodeModelHelper;
-import com.phoenixnap.oss.ramlapisync.raml.RamlRoot;
-import com.sun.codemodel.JCodeModel;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Interpreter for Any types.
- * 
+ *
  * @author Aleksandar Stojsavljevic
  * @since 0.10.2
  *
@@ -37,14 +38,11 @@ public class AnyTypeInterpreter extends BaseTypeInterpreter {
 		AnyTypeDeclaration anyTypeDeclaration = (AnyTypeDeclaration) type;
 
 		RamlInterpretationResult result = new RamlInterpretationResult(type.required());
-		String objectName;
-		if ("array".equalsIgnoreCase(anyTypeDeclaration.type())) {
-			objectName = Object.class.getSimpleName();
-		} else {
-			objectName = Void.class.getSimpleName();
-		}
+		String objectName = Map.class.getName();
 
-		result.setResolvedClass(CodeModelHelper.findFirstClassBySimpleName(builderModel, objectName));
+		JClass resolvedClass = CodeModelHelper.findFirstClassBySimpleName(builderModel, objectName);
+		JClass stringRefClass = builderModel.ref(String.class);
+		result.setResolvedClass(resolvedClass.narrow(stringRefClass, stringRefClass));
 		return result;
 	}
 }
